@@ -1,46 +1,29 @@
 const productGrid = document.getElementById('product-grid');
 const productsPerPage = 9; 
-let products = []; 
+let products = productsData; 
 let displayedProducts = 0; 
 
 function getRandomInt(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
-function getRandomProductName() {
-    const productNames = ["Кроссовки", "Футболка", "Шорты", "Куртка", "Брюки", "Шапка", "Перчатки", "Носки", "Ремень", "Рюкзак", "Шарф", "Тапки"];
-    return productNames[Math.floor(Math.random() * productNames.length)];
-}
-
-function generateProductData() {
-    return {
-        name: getRandomProductName(),
-        category: ["Обувь", "Одежда"][Math.floor(Math.random() * 2)], 
-        price: getRandomInt(200, 2000),
-        discount: Math.random() < 0.3, 
-        rating: getRandomInt(3, 5),
-    };
-}
-
-// Функция для создания HTML-карточки товара
 function createProductCard(product) {
     let priceHTML = `<p class="card-text">Цена: ${product.price} ₽</p>`;
-    if (product.discount) {
-        const discountedPrice = product.price * 0.85; 
-priceHTML = `
-    <p class="card-text"><del>${product.price} ₽</del></p>
-    <p class="card-text">Цена со скидкой: ${discountedPrice.toFixed(2)} ₽</p>
-`;
-}
+    if (product.discount > 0) { // Проверяем, есть ли скидка (discount > 0)
+        const discountedPrice = product.price * (1 - product.discount); // Расчет скидки
+        priceHTML = `
+            <p class="card-text"><del>${product.price} ₽</del> ${discountedPrice.toFixed(2)} ₽</p>
+        `;
+    }
     return `
         <div class="col-md-4 product-card">
             <div class="card">
-                <img src="/img/good.jpg" class="card-img-top" alt="${product.name}">
+                <img src=${product.image} class="card-img-top" alt="${product.name}">
                 <div class="card-body">
                     <h5 class="card-title">${product.name}</h5>
-                    <p class="card-text">Рейтинг: ⭐${product.rating}</p>
+                    <p class="card-text">Рейтинг: ${product.rating}⭐</p>
                     ${priceHTML}
-                    <a href="#" class="btn btn-primary">Добавить в корзину</a>
+                    <button class="btn btn-primary add-to-cart" data-product-id="${product.id}">Добавить в корзину</button>
                 </div>
             </div>
         </div>
@@ -71,13 +54,40 @@ function generateProducts() {
     }
 }
 
+function addToCart(productId) {
+    // Получаем корзину из localStorage или создаем пустой массив
+    let cart = JSON.parse(localStorage.getItem('cart')) || [];
+
+    // Проверяем, есть ли уже этот товар в корзине
+    const existingProduct = cart.find(item => item.id === productId);
+
+    if (existingProduct) {
+        // Если товар уже есть в корзине, увеличиваем количество (если нужно)
+        existingProduct.quantity = (existingProduct.quantity || 1) + 1;
+    } else {
+        // Если товара нет в корзине, добавляем его
+        const productToAdd = products.find(product => product.id === productId);
+        cart.push({ ...productToAdd, quantity: 1 });
+    }
+
+    // Сохраняем корзину в localStorage
+    localStorage.setItem('cart', JSON.stringify(cart));
+    console.log('Товар добавлен в корзину.  Текущая корзина:', cart);  // Выводим корзину в консоль для проверки
+}
+
 // Инициализация при загрузке страницы
 document.addEventListener('DOMContentLoaded', () => {
-    generateProducts();
-    displayProducts(0, productsPerPage); 
+    displayProducts(0, productsPerPage);
     if (products.length <= productsPerPage) {
-        document.querySelector('.load-more').style.display = 'none'; // Скрываем кнопку, если товаров мало
+        document.querySelector('.load-more').style.display = 'none';
     }
 
     document.querySelector('.load-more').addEventListener('click', loadMoreProducts);
+
+    productGrid.addEventListener('click', function(event) {
+        if (event.target.classList.contains('add-to-cart')) {
+            const productId = parseInt(event.target.dataset.productId);
+            addToCart(productId);
+        }
+    });
 });

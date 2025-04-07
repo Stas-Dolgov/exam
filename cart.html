@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Корзина</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="/css/styles.css"> 
+    <style>
+    </style>
+</head>
+<body>
+    <header class="bg-light py-3">
+        <div class="container">
+            <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between">
+                <a href="index.html" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-dark text-decoration-none">
+                    <span class="fs-4">Интернет-магазин</span>
+                </a>
+    
+                <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
+                    <a href="index.html" class="nav-link px-2 link-dark"><i class="fas fa-home"></i> Главная</a>
+                    <a href="/profile" class="nav-link px-2 link-dark"><i class="fas fa-user"></i> Личный кабинет</a>
+                </ul>
+            </div>
+        </div>
+    </header>
+
+    <div class="container content mt-4">
+        <div id="notification-area" class="alert alert-success" style="display: none;">
+            <!-- Уведомления здесь -->
+        </div>
+
+        <h2>Корзина</h2>
+        <div id="cart-items" class="row">
+            
+        </div>
+
+        <a href="index.html" class="nav-link px-2 link-dark"><p id="empty-cart-message" style="display: none;">Корзина пуста, добавьте товары.</p></a>
+
+        <hr>
+
+        <h2>Оформление заказа</h2>
+        <form id="order-form">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="name">Имя:</label>
+                        <input type="text" class="form-control" id="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="phone">Телефон:</label>
+                        <input type="text" class="form-control" id="phone" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email:</label>
+                        <input type="email" class="form-control" id="email" required>
+                    </div>
+                    <div class="form-check">
+                        <input type="checkbox" class="form-check-input" id="subscribe">
+                        <label class="form-check-label" for="subscribe">Согласие на получение рассылки</label>
+                    </div>
+                    <div class="form-group">
+                        <label for="comment">Комментарий к заказу:</label>
+                        <textarea class="form-control" id="comment" rows="3"></textarea>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="address">Адрес доставки:</label>
+                        <input type="text" class="form-control" id="address" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="delivery-date">Дата доставки:</label>
+                        <input type="date" class="form-control" id="delivery-date" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="delivery-time">Временной интервал доставки:</label>
+                        <select class="form-control" id="delivery-time">
+                            <option>9:00 - 12:00</option>
+                            <option>12:00 - 15:00</option>
+                            <option>15:00 - 18:00</option>
+                            <option>18:00 - 21:00</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Итоговая цена:</label>
+                        <p id="total-price"></p>
+                    </div>       
+                    <button type="button" class="btn btn-secondary" id="reset-button">Сброс</button>
+                    <button type="submit" class="btn btn-primary" id="submit-button" disabled>Оформить заказ</button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <footer class="footer mt-auto py-3 bg-light">
+        <div class="container-fluid">
+            <span class="text-muted">&copy; Интернет-магазин</span>
+        </div>
+    </footer>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script src="/js/cart.js"></script>
+</body>
+</html>
